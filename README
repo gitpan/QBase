@@ -1,0 +1,110 @@
+DBD:QBase - QuickBase DBD for DBI Perl by Ben Lindstrom
+
+Copyrighted (c) 1995, What Software, INC
+Work derived from DBD::Oracle by Time Bunce Copyrighted (c) 1994-95
+
+   You may distribute under the terms of either the GNU General Public
+   License or the Artistic License, as specified in the Perl README file.
+
+WARNING: This is the FIRST PUBLIC ALPHA release of QuickBase Database driver 			
+	for DBI Perl.  It *IS* incomplete, and It may be UNRELIABLE!  Use at 
+	your OWN risk.  Therefor, What Software, nor myself, can be blamed for 
+	this driver causing any damage or loss of money to your company.  
+	However, if you do find a bug, please e-mail it to me at:  	
+	Mouring@netnet.net
+
+Initial Comments:
+
+Currently there are a lot of things not implemented (see TODO for that list), but I felt it's time for a public release so peers can see at least a version of the code I'm working on.
+
+This is a bare bones release.  All commands that don't rely on returning
+information form the database will work. (Inserting Blobs are an exception.) 
+
+Hopefully in the next release I'll have a lot of the code cleaned up and
+fetch working so we can all do some REAL work under perl.
+
+Another little problem you should know is that this is a STATICLY linked module
+ONLY.  Since Perl5.001m seems to have problems loading Dynamic ObjC runtime
+code at runtime.  This will hopefully be fixed in later version.
+
+Installing:
+
+1] Before you can install DBD:QBase you need the following:
+  * Perl5.001m (NOTE the "m"!!) source
+  * DBI .63 (or higher) source
+  * QuickBase 4.1 (Note, it's not been tested with other version)
+
+2] Unarchives Perl5, DBI, and QBase.  Put the DBI directory under your
+	recently created perl5/ext directory.  Do the same for QBase.
+	(note: NeXT's symlinks are not link Linux/SunOS/Solaris so please
+	 don't just symlink the directories in..If you do then you'll have
+	 to run perl5/miniperl ext/DBI/Makefile.PL by hand since it will
+	 file to run.)
+
+3] Now run ./Configure and when you see the following lines add in the
+	correct responses.
+  * Any additional ld flags (NOT including libraries)? [-u libsys_s]
+	-- Add: -ObjC
+  * Any additional libraries? [-ldbm]
+        -- Add: -lMedia_s -lNeXT_s -lQBSQL5_1
+  * What extensions do you wish to load statically? [ ]
+	-- Add: DBI QBase
+
+4] run "Make"  
+ 	* Subnote: For some reason on NeXT DBI bombs out because of multiply
+		declares of crypt() I personally commented it out of the
+		perl.h file.  There are better ways of doing this, but this
+		way will work for now..Perl programmers should check for
+		crypt() and not declare it/use it if it exits. 
+	* 2nd note: If DBI bombs out just go into the directory and run
+		"perl Makefile.pl" (or the mini-perl from perl5/ directory).
+	* 3nd note: QBase WILL bomb out!  Don't get scared. =)  It requires
+		a little more help. =)
+
+5] Now after QBase failes to compile go to perl5/lib/auto and do the following commands:
+	kiki# ln -s ../../ext/DBI/blib/auto/DBI .
+	kiki# ln -s ../../ext/QBase/blib/auto/DBD/QBase .
+
+6] Then go back to perl5/ and do a "make" again.  It should correctly
+	compiled QBase now. 
+
+7] Then just do a "make install"  and your done.
+
+Testing if driver exists:
+
+Now, DBI/DBD comes with a standard way to test to see if the driver is up
+to spec.  Since DBD::QBase is not quite up to that, but I something like it
+called "qb.pl".  It's more their as a demostation to how to write perl/dbi
+code, but if you run it (make sure you have a database called "testdb"
+with user "test" and "testdb" as the password.) you can check to see if the
+driver was correctly installed. (Note, it will fail on the SELECT statement
+since fetching from the database is broken.)
+
+Final words of wisdom:
+
+Good luck, may the force be with you.  And if you have any problems please
+feel free to ask me about it. If you see something that does not look
+right in the code.  Fix it and send it to me...<shrug>  There are a lot of
+DBD stubs that have code in it, but that does not mean that it was written
+by me or even works. =)
+
+Hopefully in the install I did not leave anything out...If I did please tell
+me.
+
+The code is really not documented. Sorry, but documenation takes a backseat to
+figuring out what code does and how to quickly hack something into being.
+
+BTW, if you are using this driver; please subscribe to the perldb-interest 
+list. Myself and other more qualified then myself are always their willing
+to help.
+
+Foot Notes:
+
+QuickBase is programmed and copyrighed product of SofDesign Corporation.
+	For more information on QuickBase: http://www.quickbase.com
+
+DBI/DBD drivers and information can be found at: 	
+	http://www.hermetica.com/technologia/DBI/
+
+
+			

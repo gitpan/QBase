@@ -1,0 +1,11 @@
+Version .01		First Semi-working alpha code
+
+[No comments, internal alpha..Just getting the system to work =) ]
+
+Version .02 Public Alpha
+
+Can't resolve the ObjC and Perl dynamic loading problems, so I've moved to
+a staticly linked DBI+DBD+Perl5 for my testing.  So far most things work
+excluding anything returning data from the database and anything doing with
+blobs.
+
